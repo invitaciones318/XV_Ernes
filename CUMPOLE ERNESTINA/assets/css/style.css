@@ -1,0 +1,165 @@
+/*--------------------------------------------------------------
+GENERAL & FONDOS INTERCALADOS
+--------------------------------------------------------------*/
+html, body {
+    min-height: 100%;
+}
+
+body {
+    background-color: #f4f6f4; /* Fondo general blanco / gris claro */
+    font-family: "Open Sans", sans-serif;
+    margin: 0;
+    padding: 0;
+    color: #333;
+}
+
+/* Secciones con Fondo Blanco */
+.section-white {
+    background-color: #ffffff;
+    width: 100%;
+    box-shadow: inset 0 1px 3px rgba(0,0,0,0.02);
+}
+
+.nombres-white {
+    font-family: 'Dancing Script', cursive;
+    font-size: 70px !important;
+    color: #2c4a3e;
+    font-weight: 700;
+}
+
+/* Contador Blanco */
+.countdown-box-white {
+    background: #f8f9fa;
+    border: 1px solid #e0e0e0;
+    padding: 12px 5px;
+    border-radius: 12px;
+}
+
+.countdown-number-white {
+    font-family: 'Prata', serif;
+    font-size: 28px;
+    color: #2c4a3e;
+    display: block;
+}
+
+.countdown-label-white {
+    font-size: 10px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    color: #666;
+    margin-top: 4px;
+    display: block;
+}
+
+/*--------------------------------------------------------------
+TARJETAS CON TEXTURA DE TELA VERDE
+--------------------------------------------------------------*/
+main#main {
+    max-width: 700px;
+    margin: auto;
+}
+
+section.content-card {
+    position: relative;
+    padding: 45px 30px;
+    margin: 25px 15px;
+    border-radius: 24px;
+    background: url("../img/FONDO.jpeg") no-repeat center center;
+    background-size: cover;
+    box-shadow: 0 15px 35px rgba(0,0,0,0.15);
+    color: #fff;
+}
+
+/* Capa sutil de oscurecimiento sobre la tela para legibilidad */
+section.content-card::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: rgba(5, 18, 13, 0.5);
+    border-radius: 24px;
+    z-index: 0;
+}
+
+section.content-card > * {
+    position: relative;
+    z-index: 1;
+}
+
+section.content-card h3 {
+    font-family: 'Prata', serif !important;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    font-size: 22px !important;
+    color: #fff;
+    margin-bottom: 15px;
+}
+
+section.content-card p {
+    font-family: 'Open Sans', sans-serif;
+    font-weight: 300;
+    letter-spacing: 1px;
+    font-size: 15px;
+    color: #eaeaea;
+}
+
+/*--------------------------------------------------------------
+MAPA Y BOTONES
+--------------------------------------------------------------*/
+.map-wrapper {
+    position: relative;
+    width: 100%;
+    border-radius: 14px;
+    overflow: hidden;
+    box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+}
+
+.whatsapp-link, .btn-light-custom {
+    background: #2c4a3e;
+    color: #fff !important;
+    border: 1px solid #2c4a3e;
+    padding: 12px 35px;
+    border-radius: 50px;
+    font-family: 'Open Sans', sans-serif;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    font-size: 13px;
+    text-decoration: none;
+    display: inline-block;
+    transition: all 0.3s ease;
+}
+
+.whatsapp-link:hover, .btn-light-custom:hover {
+    background: #1b2f27;
+    transform: scale(1.03);
+}
+
+/*--------------------------------------------------------------
+MÚSICA FLOTANTE
+--------------------------------------------------------------*/
+#music-control {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    z-index: 10000;
+}
+
+#music-toggle {
+    background: rgba(255, 255, 255, 0.9);
+    border: 1px solid #ccc;
+    color: #2c4a3e;
+    width: 45px;
+    height: 45px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.15);
+}
+
+#music-toggle:hover {
+    background: #2c4a3e;
+    color: #fff;
+}

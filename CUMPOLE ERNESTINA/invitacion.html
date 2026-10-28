@@ -1,0 +1,523 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="utf-8">
+    <meta content="width=device-width, initial-scale=1.0" name="viewport">
+
+    <title>Mis 15 Ernes</title>
+
+    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0/dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@700&family=Prata&family=Montserrat:ital,wght@0,300..600;1,300..600&display=swap" rel="stylesheet">
+
+    <link href="assets/vendor/boxicons/css/boxicons.min.css" rel="stylesheet">
+    <link href="assets/css/style.css" rel="stylesheet">
+    <style>
+        /* Estrellitas animadas */
+        .stars-container {
+            position: relative;
+            height: 40px;
+            margin-bottom: 15px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 20px;
+        }
+        .star {
+            color: #d4af37 !important;
+            font-size: 16px !important;
+            display: inline-block;
+            animation: twinkle 1.5s infinite ease-in-out;
+        }
+        .star:nth-child(1) { animation-delay: 0s; }
+        .star:nth-child(2) { animation-delay: 0.3s; font-size: 20px !important; }
+        .star:nth-child(3) { animation-delay: 0.6s; }
+
+        @keyframes twinkle {
+            0%, 100% { transform: scale(0.6); opacity: 0.3; }
+            50% { transform: scale(1.3); opacity: 1; }
+        }
+
+        /* Globo terráqueo con animación de giro */
+        @keyframes spin-globe {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+        .globe-icon-box {
+            width: 50px;
+            height: 50px;
+            margin: 0 auto 15px auto;
+            border: 1.5px solid #2c4a3e;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            animation: spin-globe 12s linear infinite;
+        }
+        .globe-icon-box svg {
+            width: 26px;
+            height: 26px;
+            stroke: #2c4a3e;
+            stroke-width: 1.5;
+            fill: none;
+        }
+
+        /* Diamante con animación de pulso/brillo */
+        @keyframes pulse-diamond {
+            0%, 100% { transform: scale(1); opacity: 0.7; }
+            50% { transform: scale(1.12); opacity: 1; }
+        }
+        .diamond-icon-box {
+            width: 50px;
+            height: 50px;
+            margin: 0 auto 15px auto;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            animation: pulse-diamond 2s infinite ease-in-out;
+        }
+        .diamond-icon-box svg {
+            width: 32px;
+            height: 32px;
+            stroke: #e2c074;
+            stroke-width: 1.5;
+            fill: none;
+        }
+
+        /* VENTANA FLOTANTE (MODAL) DEL MAPA */
+        #map-modal {
+            display: none;
+            position: fixed;
+            z-index: 99999;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.6);
+            backdrop-filter: blur(5px);
+            align-items: center;
+            justify-content: center;
+        }
+        .map-modal-content {
+            background: #fff;
+            padding: 25px 20px 20px 20px;
+            border-radius: 20px;
+            width: 90%;
+            max-width: 450px;
+            position: relative;
+            box-shadow: 0 15px 35px rgba(0,0,0,0.3);
+            text-align: center;
+        }
+        .close-map-btn {
+            position: absolute;
+            top: 10px;
+            right: 15px;
+            background: none;
+            border: none;
+            font-size: 32px;
+            color: #333;
+            cursor: pointer;
+            line-height: 1;
+        }
+    </style>
+</head>
+
+<body> 
+    <audio id="background-music" loop>
+        <source src="assets/audio/musica.mp3" type="audio/mpeg">
+        Tu navegador no soporta el elemento de audio.
+    </audio>
+
+    <div id="music-control">
+        <button id="music-toggle" onclick="toggleMusic()">
+            <i id="music-icon" class="bi bi-volume-mute-fill"></i>
+        </button>
+    </div>
+
+    <!-- 1. PRESENTACIÓN: FOTO 1 + TÍTULO + CUENTA REGRESIVA (Fondo Blanco) -->
+    <section id="presentacion" class="section-white text-center py-5">
+        <div class="container" data-aos="zoom-in">
+            <div class="photo-principal-container mx-auto mb-4" style="max-width: 350px; border-radius: 20px; overflow: hidden; box-shadow: 0 10px 25px rgba(0,0,0,0.15);">
+                <img src="assets/img/ERNESTINA FOTO1.jpeg" alt="Ernestina" style="width: 100%; display: block;">
+            </div>
+            <h2 class="nombres-white">Mis XV Ernes</h2>
+            
+            <!-- Cuenta Regresiva -->
+            <div class="row justify-content-center my-4" id="countdown-wrapper">
+                <div class="col-3 col-md-2 text-center">
+                    <div class="countdown-box-white">
+                        <span id="days" class="countdown-number-white">00</span>
+                        <span class="countdown-label-white">Días</span>
+                    </div>
+                </div>
+                <div class="col-3 col-md-2 text-center">
+                    <div class="countdown-box-white">
+                        <span id="hours" class="countdown-number-white">00</span>
+                        <span class="countdown-label-white">Horas</span>
+                    </div>
+                </div>
+                <div class="col-3 col-md-2 text-center">
+                    <div class="countdown-box-white">
+                        <span id="minutes" class="countdown-number-white">00</span>
+                        <span class="countdown-label-white">Min</span>
+                    </div>
+                </div>
+                <div class="col-3 col-md-2 text-center">
+                    <div class="countdown-box-white">
+                        <span id="seconds" class="countdown-number-white">00</span>
+                        <span class="countdown-label-white">Seg</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <main id="main">
+
+        <!-- 2. ¿CUÁNDO? (Fondo Tela Verde) -->
+        <section class="content-card text-center" data-aos="fade-up">
+            <h3>¿Cuándo?</h3>
+            <p class="fs-4 mb-1" style="font-family: 'Prata', serif; color: #e2c074;">21 de Noviembre 2026</p>
+            <p class="fs-5">21:00 HS</p>
+        </section>
+
+        <!-- 3. ¿DÓNDE? (Fondo Blanco - Troca Salón de Eventos con Globo Animado y Botón que abre el Modal del Mapa) -->
+        <section class="section-white text-center py-5" data-aos="fade-up">
+            <div class="container">
+                <!-- Globo terráqueo animado -->
+                <div class="globe-icon-box">
+                    <svg viewBox="0 0 24 24">
+                        <circle cx="12" cy="12" r="10"></circle>
+                        <line x1="2" y1="12" x2="22" y2="12"></line>
+                        <path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"></path>
+                    </svg>
+                </div>
+
+                <h3>¿Dónde?</h3>
+                <p class="fs-5 mb-3" style="color: #333;">Troca Salón de Eventos<br><small style="color: #666; font-size: 14px;">Calle 548, Quequén (CP 76331)</small></p>
+                
+                <!-- Botón Cómo Llegar que abre la ventana flotante con el mapa -->
+                <div class="mt-4">
+                    <button type="button" class="btn-light-custom border-0" onclick="openMapModal()">
+                        CÓMO LLEGAR
+                    </button>
+                </div>
+            </div>
+        </section>
+
+        <!-- VENTANA FLOTANTE (MODAL) CON EL MAPA DE TROCA -->
+        <div id="map-modal">
+            <div class="map-modal-content">
+                <button class="close-map-btn" onclick="closeMapModal()">&times;</button>
+                <h4 style="font-family: 'Prata', serif; color: #2c4a3e; margin-bottom: 15px; font-size: 20px;">Troca Salón de Eventos</h4>
+                <div style="width: 100%; border-radius: 12px; overflow: hidden;">
+                    <iframe src="https://www.google.com/maps/embed?pb=!1m23!1m12!1m3!1d49927.17740720054!2d-58.69864104999999!3d-38.54647725!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!4m8!3e6!4m0!4m5!1s0x958f970022093939%3A0xb4db12ba340b413b!2sTROCA%20SAL%C3%93N%20DE%20EVENTOS%2C%20C.%20548%20802-900%2C%20B7631%20Quequ%C3%A9n%2C%20Provincia%20de%20Buenos%20Aires!3m2!1d-38.5605645!2d-58.7117218!5e0!3m2!1ses-419!2sar!4v1792978010888!5m2!1ses-419!2sar" width="100%" height="320" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="strict-origin-when-cross-origin"></iframe>
+                </div>
+            </div>
+        </div>
+
+        <!-- 4. DRESS CODE + FOTO 2 (Fondo Tela Verde con Diamante Animado) -->
+        <section class="content-card text-center" data-aos="fade-up">
+            <!-- Diamante animado -->
+            <div class="diamond-icon-box">
+                <svg viewBox="0 0 24 24">
+                    <polygon points="6 3 18 3 22 9 12 22 2 9 6 3"></polygon>
+                    <line x1="2" y1="9" x2="22" y2="9"></line>
+                    <line x1="6" y1="3" x2="12" y2="22"></line>
+                    <line x1="18" y1="3" x2="12" y2="22"></line>
+                </svg>
+            </div>
+
+            <h3>Dress Code</h3>
+            <p class="fs-4 mb-4" style="font-family: 'Prata', serif; color: #e2c074;">Elegante Sport</p>
+            
+            <div class="photo-principal-container mx-auto" style="max-width: 320px; border-radius: 16px; overflow: hidden; box-shadow: 0 8px 20px rgba(0,0,0,0.4);">
+                <img src="assets/img/ERNESTINA FOTO2.png" alt="Ernestina foto 2" style="width: 100%; display: block;">
+            </div>
+        </section>
+
+        <!-- 5. MIS XV ERNES (Fondo Tela Verde) -->
+        <section class="content-card text-center" data-aos="fade-up">
+            <h2 style="font-family: 'Dancing Script', cursive; font-size: 55px; color: #fff;">Mis XV Ernes</h2>
+        </section>
+
+        <!-- 6. CONFIRMAR ASISTENCIA (Fondo Tela Verde - Selector hasta 10 personas) -->
+        <section class="content-card text-center" data-aos="fade-up">
+            <h3>Confirmar Asistencia</h3>
+            <p>Antes del 10 de Noviembre</p>
+            
+            <form id="rsvp-form" onsubmit="enviarWhatsApp(event)" class="mt-4 text-start mx-auto" style="max-width: 400px;">
+                <div class="mb-3">
+                    <label class="form-label text-light">Número de personas a confirmar</label>
+                    <select id="num-personas" class="form-select" style="background: rgba(0,0,0,0.3); color: #fff; border: 1px solid rgba(255,255,255,0.3);">
+                        <option value="1" style="background: #111;">1 Persona</option>
+                        <option value="2" style="background: #111;">2 Personas</option>
+                        <option value="3" style="background: #111;">3 Personas</option>
+                        <option value="4" style="background: #111;">4 Personas</option>
+                        <option value="5" style="background: #111;">5 Personas</option>
+                        <option value="6" style="background: #111;">6 Personas</option>
+                        <option value="7" style="background: #111;">7 Personas</option>
+                        <option value="8" style="background: #111;">8 Personas</option>
+                        <option value="9" style="background: #111;">9 Personas</option>
+                        <option value="10" style="background: #111;">10 Personas</option>
+                    </select>
+                </div>
+                <div class="mb-3">
+                    <label class="form-label text-light">Nombre y Apellido</label>
+                    <input type="text" id="nombre-invitado" class="form-control" placeholder="Tu nombre y apellido" required style="background: rgba(0,0,0,0.3); color: #fff; border: 1px solid rgba(255,255,255,0.3);">
+                </div>
+                <div class="mb-3">
+                    <label class="form-label text-light">Sugerí tu canción</label>
+                    <input type="text" id="cancion-invitado" class="form-control" placeholder="Tema o artista que no puede faltar" style="background: rgba(0,0,0,0.3); color: #fff; border: 1px solid rgba(255,255,255,0.3);">
+                </div>
+                <div class="mb-3 text-center">
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="radio" name="asistencia" id="confirmo" value="Confirmo" checked>
+                        <label class="form-check-label text-light" for="confirmo">Confirmo</label>
+                    </div>
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="radio" name="asistencia" id="no-podre" value="No podré asistir">
+                        <label class="form-check-label text-light" for="no-podre">No podré asistir</label>
+                    </div>
+                </div>
+                <div class="text-center mt-4">
+                    <button type="submit" class="whatsapp-link border-0 w-100" style="background: #25D366 !important;">
+                        Confirmar por WhatsApp <i class="bi bi-whatsapp"></i>
+                    </button>
+                </div>
+            </form>
+        </section>
+
+        <!-- 7. TRIVIA INTERACTIVA (Fondo Blanco) -->
+        <section class="section-white text-center py-5" data-aos="fade-up">
+            <div class="container" style="max-width: 600px;">
+                <h3 style="color: #2c4a3e; font-family: 'Prata', serif;">¿Cuánto me conoces?</h3>
+                <p style="color: #666; margin-bottom: 25px;">¡Juguemos un poco!</p>
+                
+                <div id="trivia-container">
+                    <div id="trivia-start" class="p-4">
+                        <button class="btn btn-dark px-5 py-3 rounded-pill fw-bold text-uppercase" onclick="iniciarTrivia()" style="background: #2c4a3e; border: none; letter-spacing: 2px;">
+                            Jugar Trivia
+                        </button>
+                    </div>
+
+                    <div id="trivia-box" class="card p-4 text-start shadow-sm border-0 d-none" style="background: #fdfdfd; border-radius: 16px;">
+                        <div class="d-flex justify-content-between align-items-center mb-3">
+                            <span id="trivia-counter" class="badge bg-secondary" style="font-size: 12px;">Pregunta 1/3</span>
+                        </div>
+                        <h5 id="trivia-pregunta" class="fw-bold mb-4" style="color: #2c4a3e; font-size: 18px;"></h5>
+                        <div id="trivia-opciones" class="d-grid gap-2"></div>
+                    </div>
+
+                    <div id="trivia-result" class="card p-4 text-center shadow-sm border-0 d-none" style="background: #fdfdfd; border-radius: 16px;">
+                        <h4 class="fw-bold mb-3" style="color: #2c4a3e;">¡Resultado de la Trivia!</h4>
+                        <p id="trivia-score-text" class="fs-5 mb-4" style="color: #444;"></p>
+                        <button class="btn btn-outline-dark px-4 py-2 rounded-pill" onclick="reiniciarTrivia()" style="border-color: #2c4a3e; color: #2c4a3e;">
+                            Jugar de Nuevo
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 8. REGALOS (Fondo Tela Verde) -->
+        <section class="content-card text-center" data-aos="fade-up">
+            <i class="bi bi-gift mb-2" style="font-size: 35px; color: #e2c074;"></i>
+            <h3>Regalos</h3>
+            <p class="fs-5 mb-0">Nada es más importante que tu presencia.</p>
+        </section>
+
+        <!-- 9. FOTO 3 + ESTRELLITAS + TE ESPERO + WHATSAPP ICONO + MARCA ELEGANTE (Fondo Blanco) -->
+        <section class="section-white text-center py-5" data-aos="fade-up">
+            <div class="container">
+                <div class="photo-principal-container mx-auto mb-4" style="max-width: 350px; border-radius: 20px; overflow: hidden; box-shadow: 0 10px 25px rgba(0,0,0,0.15);">
+                    <img src="assets/img/ERNESTINAFOTO3.png" alt="Ernestina foto 3" style="width: 100%; display: block;">
+                </div>
+
+                <div class="stars-container">
+                    <i class="bi bi-star-fill star"></i>
+                    <i class="bi bi-star-fill star"></i>
+                    <i class="bi bi-star-fill star"></i>
+                </div>
+
+                <h2 style="font-family: 'Prata', serif; font-size: 28px; color: #2c4a3e; letter-spacing: 2px; margin-bottom: 25px;">TE ESPERO</h2>
+
+                <!-- Icono de WhatsApp limpio (sin número visible) y marca delicada -->
+                <div class="mt-4 pt-3 border-top d-inline-block px-4" style="border-color: #eee !important;">
+                    <a href="https://wa.me/5492262572178" target="_blank" class="text-success fs-3 text-decoration-none d-inline-block mb-2" style="transition: transform 0.2s;" title="Contactar por WhatsApp">
+                        <i class="bi bi-whatsapp"></i>
+                    </a>
+                    <div>
+                        <span style="font-family: 'Montserrat', sans-serif; font-size: 11px; color: #888; letter-spacing: 2px; text-transform: uppercase; font-weight: 400;">
+                            PrinNeco Invitaciones
+                        </span>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- SCRIPTS -->
+    <script>
+        // Funciones para abrir y cerrar la ventana flotante del mapa
+        function openMapModal() {
+            document.getElementById('map-modal').style.display = 'flex';
+        }
+        function closeMapModal() {
+            document.getElementById('map-modal').style.display = 'none';
+        }
+        window.onclick = function(event) {
+            let modal = document.getElementById('map-modal');
+            if (event.target == modal) {
+                modal.style.display = 'none';
+            }
+        }
+
+        var targetDate = new Date("November 21, 2026 21:00:00").getTime();
+
+        var countdownTimer = setInterval(function () {
+            var now = new Date().getTime();
+            var timeRemaining = targetDate - now;
+
+            var days = Math.floor(timeRemaining / (1000 * 60 * 60 * 24));
+            var hours = Math.floor((timeRemaining % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+            var minutes = Math.floor((timeRemaining % (1000 * 60 * 60)) / (1000 * 60));
+            var seconds = Math.floor((timeRemaining % (1000 * 60)) / 1000);
+
+            if (document.getElementById("days")) document.getElementById("days").textContent = days;
+            if (document.getElementById("hours")) document.getElementById("hours").textContent = hours;
+            if (document.getElementById("minutes")) document.getElementById("minutes").textContent = minutes;
+            if (document.getElementById("seconds")) document.getElementById("seconds").textContent = seconds;
+        }, 1000);
+
+        function enviarWhatsApp(e) {
+            e.preventDefault();
+            const numPersonas = document.getElementById('num-personas').value;
+            const nombre = document.getElementById('nombre-invitado').value;
+            const cancion = document.getElementById('cancion-invitado').value;
+            const asistencia = document.querySelector('input[name="asistencia"]:checked').value;
+
+            const texto = `¡Hola! Soy ${nombre}. ${asistencia} a los 15 de Ernes. Cantidad de personas: ${numPersonas}. Sugerencia de canción: ${cancion || 'Ninguna'}.`;
+            const url = `https://api.whatsapp.com/send?phone=5492262000000&text=${encodeURIComponent(texto)}`;
+            window.open(url, '_blank');
+        }
+
+        const preguntasTrivia = [
+            {
+                pregunta: "¿Cuál es mi frase más repetida?",
+                opciones: ["¡Ay! Callate", "Es lo mismo", "Tengo hambre"],
+                correcta: 2
+            },
+            {
+                pregunta: "¿Qué haría un finde?",
+                opciones: ["Salir", "Tomar mates en la plaza", "Quedarme en casa"],
+                correcta: 1
+            },
+            {
+                pregunta: "¿Quién va a estar más manija?",
+                opciones: ["Mi viejo", "Martu (prima)", "Yo"],
+                correcta: 0
+            }
+        ];
+
+        let preguntaActual = 0;
+        let puntaje = 0;
+
+        function iniciarTrivia() {
+            document.getElementById('trivia-start').classList.add('d-none');
+            document.getElementById('trivia-box').classList.remove('d-none');
+            preguntaActual = 0;
+            puntaje = 0;
+            cargarPregunta();
+        }
+
+        function cargarPregunta() {
+            if (preguntaActual < preguntasTrivia.length) {
+                const q = preguntasTrivia[preguntaActual];
+                document.getElementById('trivia-counter').textContent = `Pregunta ${preguntaActual + 1}/${preguntasTrivia.length}`;
+                document.getElementById('trivia-pregunta').textContent = q.pregunta;
+                
+                const contenedorOpciones = document.getElementById('trivia-opciones');
+                contenedorOpciones.innerHTML = "";
+
+                q.opciones.forEach((opcion, index) => {
+                    const btn = document.createElement('button');
+                    btn.className = "btn btn-outline-dark text-start p-3 rounded-3 mb-2";
+                    btn.style.borderColor = "#ccc";
+                    btn.textContent = opcion;
+                    btn.onclick = () => seleccionarRespuesta(index, btn);
+                    contenedorOpciones.appendChild(btn);
+                });
+            } else {
+                mostrarResultados();
+            }
+        }
+
+        function seleccionarRespuesta(indexSeleccionado, botonSeleccionado) {
+            const q = preguntasTrivia[preguntaActual];
+            const botones = document.getElementById('trivia-opciones').children;
+
+            for (let b of botones) {
+                b.onclick = null;
+            }
+
+            if (indexSeleccionado === q.correcta) {
+                botonSeleccionado.classList.remove('btn-outline-dark');
+                botonSeleccionado.classList.add('btn-success');
+                puntaje++;
+            } else {
+                botonSeleccionado.classList.remove('btn-outline-dark');
+                botonSeleccionado.classList.add('btn-danger');
+                botones[q.correcta].classList.remove('btn-outline-dark');
+                botones[q.correcta].classList.add('btn-success');
+            }
+
+            setTimeout(() => {
+                preguntaActual++;
+                cargarPregunta();
+            }, 1200);
+        }
+
+        function mostrarResultados() {
+            document.getElementById('trivia-box').classList.add('d-none');
+            const resultBox = document.getElementById('trivia-result');
+            resultBox.classList.remove('d-none');
+
+            const total = preguntasTrivia.length;
+            document.getElementById('trivia-score-text').innerHTML = `¡Obtuviste <strong>${puntaje}</strong> correctas de <strong>${total}</strong>! 🎉`;
+        }
+
+        function reiniciarTrivia() {
+            document.getElementById('trivia-result').classList.add('d-none');
+            iniciarTrivia();
+        }
+    </script>
+
+    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+    <script>
+        const music = document.getElementById('background-music');
+        const icon = document.getElementById('music-icon');
+        let isPlaying = false; 
+        
+        AOS.init({ duration: 1200, once: true });
+
+        function toggleMusic() {
+            if (isPlaying) {
+                music.pause();
+                icon.className = 'bi bi-volume-mute-fill';
+            } else {
+                music.play().catch(e => console.log("Audio play blocked"));
+                icon.className = 'bi bi-volume-up-fill';
+            }
+            isPlaying = !isPlaying;
+        }
+    </script>
+
+</body>
+</html>
